@@ -1,0 +1,10 @@
+services:
+  client:
+    class: Drupal\client\ParamConverter\ClientParamConverter
+    tags:
+      - { name: paramconverter }
+  client.client_welcome_event_subscriber:
+    class: Drupal\client\EventSubscriber\ClientWelcomeSubscriber
+    arguments: ['@plugin.manager.mail', '@logger.factory', '@current_user']
+    tags:
+      - { name: event_subscriber }

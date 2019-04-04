@@ -1,0 +1,91 @@
+<?php
+
+/**
+ * @file
+ * Contains client.install.
+ */
+
+use Drupal\Core\Database\Database;
+
+/**
+ * Implements hook_schema().
+ */
+function client_schema() {
+  $schema['client'] = [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+      ],
+      'name' => [
+        'type' => 'varchar',
+        'length' => 40,
+        'not null' => TRUE,
+      ],
+      'email' => [
+        'type' => 'varchar',
+        'length' => 40,
+        'not null' => TRUE,
+      ],
+      'department' => [
+        'type' => 'varchar',
+        'length' => 40,
+        'not null' => TRUE,
+      ],
+      'address' => [
+        'type' => 'text',
+        'not null' => TRUE,
+      ],
+      'country' => [
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+      ],
+      'state' => [
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+      ],
+      'status' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'size' => 'tiny',
+        'length' => 1,
+        'default' => 1,
+      ],
+      'profile_pic' => [
+        'type' => 'int',
+        'not null' => FALSE,
+        'length' => 11,
+      ],
+    ],
+    'primary key' => ['id'],
+  ];
+  return $schema;
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function client_uninstall() {
+  db_query("drop table client")->execute();
+}
+
+/**
+ * Implements hook_update_N().
+ */
+function client_update_8001() {
+  $schema = Database::getConnection()->schema();
+  $schema->addField('client', 'status', [
+    'type' => 'int',
+    'not null' => TRUE,
+    'size' => 'tiny',
+    'default' => 1,
+    'length' => 1,
+  ]);
+  $schema->addField('client', 'profile_pic', [
+    'type' => 'int',
+    'not null' => FALSE,
+    'length' => 11,
+  ]);
+}

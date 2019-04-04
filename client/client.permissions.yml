@@ -1,0 +1,20 @@
+manage clients:
+  title: 'Manage Client records'
+  description: 'View, add, edit and delete client records'
+  restrict access: true
+add client:
+  title: 'Add Client'
+  description: 'Create a new client'
+  restrict access: true
+view client:
+  title: 'View Client'
+  description: 'View an client record'
+  restrict access: true
+edit client:
+  title: 'Edit Client'
+  description: 'Edit an client'
+  restrict access: true
+delete client:
+  title: 'Delete Client'
+  description: 'Delete an client'
+  restrict access: true

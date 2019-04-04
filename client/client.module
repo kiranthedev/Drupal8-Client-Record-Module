@@ -1,0 +1,199 @@
+<?php
+
+/**
+ * @file
+ * Contains client.module.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function client_menu() {
+  return [
+    'admin/content/client' => [
+      'title' => 'List Clients',
+      'route_name' => 'client.list',
+    ],
+    'admin/content/client/add' => [
+      'title' => 'Add an client',
+      'route_name' => 'client.add',
+    ],
+    'admin/content/client/{client}/edit' => [
+      'title' => 'Edit Client',
+      'route_name' => 'client.edit',
+    ],
+    'admin/content/client/{client}' => [
+      'title' => 'View Client',
+      'route_name' => 'client.view',
+    ],
+    'admin/content/client/{id}/delete' => [
+      'title' => 'Delete an client',
+      'route_name' => 'client.delete',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_mail().
+ */
+function client_mail($key, &$message, $params) {
+  switch ($key) {
+    case 'send_client_mail':
+      $message['from'] = \Drupal::config('system.site')->get('mail');
+      $message['subject'] = $params['subject'];
+      $message['body'][] = $params['message'];
+      break;
+
+    case 'send_welcome_mail':
+      $message['from'] = \Drupal::config('system.site')->get('mail');
+      $client = $params['client'];
+      $message['subject'] = 'Welcome Abroad ' . $client->name;
+      $message_body = "Dear " . $client->name . " \n";
+      $message_body .= "Welcome to our organisation.
+		 	Your Client Id is: " . $client->id . " \n\n";
+      $message_body .= "Regards, \n TechAspect family";
+      $message['body'][] = $message_body;
+      break;
+  }
+}
+
+/**
+ * Implements hook_views_data().
+ */
+function client_views_data() {
+  $data = [];
+  $data['client']['table']['group'] = t('Client');
+  $data['client']['table']['provider'] = 'client';
+  $data['client']['table']['base'] = [
+  // This is the identifier field for the view.
+    'field' => 'id',
+    'title' => t('Client'),
+    'help' => t('Table containing client records'),
+    'weight' => -10,
+  ];
+
+  $data['client']['id'] = [
+    'title' => t('Client Id'),
+    'help' => t('Client Id'),
+    'field' => [
+          // ID of field handler plugin to use.
+      'id' => 'numeric',
+    ],
+    'sort' => [
+          // ID of sort handler plugin to use.
+      'id' => 'standard',
+    ],
+    'filter' => [
+          // ID of filter handler plugin to use.
+      'id' => 'numeric',
+    ],
+    'argument' => [
+          // ID of argument handler plugin to use.
+      'id' => 'numeric',
+    ],
+  ];
+  $data['client']['name'] = [
+    'title' => t('Client Name'),
+    'field' => [
+      'id' => 'standard',
+    ],
+    'sort' => [
+      'id' => 'standard',
+    ],
+    'filter' => [
+      'id' => 'string',
+    ],
+    'argument' => [
+      'id' => 'string',
+    ],
+  ];
+  $data['client']['email'] = [
+    'title' => t('Client Email'),
+    'field' => [
+      'id' => 'standard',
+    ],
+    'sort' => [
+      'id' => 'standard',
+    ],
+    'filter' => [
+      'id' => 'string',
+    ],
+    'argument' => [
+      'id' => 'string',
+    ],
+  ];
+  $data['client']['department'] = [
+    'title' => t('Department'),
+    'field' => [
+      'id' => 'standard',
+    ],
+    'sort' => [
+      'id' => 'standard',
+    ],
+    'filter' => [
+      'id' => 'in_operator',
+      'options callback' => '_client_get_department_lists',
+    ],
+    'argument' => [
+      'id' => 'string',
+    ],
+  ];
+  $data['client']['address'] = [
+    'title' => t('Address'),
+    'field' => [
+      'id' => 'standard',
+    ],
+    'sort' => [
+      'id' => 'standard',
+    ],
+    'filter' => [
+      'id' => 'string',
+    ],
+    'argument' => [
+      'id' => 'string',
+    ],
+  ];
+  $data['client']['country'] = [
+    'title' => t('Country'),
+    'field' => [
+      'id' => 'standard',
+    ],
+    'sort' => [
+      'id' => 'standard',
+    ],
+    'filter' => [
+      'id' => 'string',
+    ],
+    'argument' => [
+      'id' => 'string',
+    ],
+  ];
+  $data['client']['state'] = [
+    'title' => t('State'),
+    'field' => [
+      'id' => 'standard',
+    ],
+    'sort' => [
+      'id' => 'standard',
+    ],
+    'filter' => [
+      'id' => 'string',
+    ],
+    'argument' => [
+      'id' => 'string',
+    ],
+  ];
+  return $data;
+}
+
+/**
+ * Provides options for in_operator views filter.
+ */
+function _client_get_department_lists() {
+  return [
+    'Development' => 'Development',
+    'HR' => 'HR',
+    'Sales' => 'Sales',
+    'Marketing' => 'Marketing',
+  ];
+}

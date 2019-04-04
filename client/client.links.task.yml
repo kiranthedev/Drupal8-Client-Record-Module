@@ -1,0 +1,4 @@
+client.list:
+  title: Clients
+  route_name: client.list
+  base_route: system.admin_content

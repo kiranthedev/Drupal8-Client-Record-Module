@@ -1,0 +1,88 @@
+client.list:
+  path: '/admin/content/client'
+  defaults:
+    _controller: '\Drupal\client\controller\ClientController::listClients'
+    _title: 'Client Dashboard'
+  requirements:
+    _permission: 'manage clients'
+
+client.add:
+  path: '/admin/content/client/add'
+  defaults:
+    _form: '\Drupal\client\forms\ClientForm'
+    _title: 'Create Client'
+  requirements:
+    _permission: 'add client'
+
+client.view:
+  path: '/admin/content/client/{client}/{js}'
+  defaults:
+    _controller: '\Drupal\client\controller\ClientController::viewClient'
+    _title: 'View Client'
+  requirements:
+    _permission: 'view client'
+    js: 'nojs|ajax'
+  options:
+    parameters:
+      client:
+        type: client
+
+client.edit:
+  path: 'admin/content/client/{client}/edit'
+  defaults:
+    _form: '\Drupal\client\forms\ClientForm'
+    _title: 'Edit Client'
+  requirements:
+    _permission: 'edit client'
+  options:
+    parameters:
+      client:
+        type: client
+
+client.quickedit:
+  path: 'admin/content/client/{client}/quickedit'
+  defaults:
+    _controller: '\Drupal\client\controller\ClientController::openQuickEditModalForm'
+    _title: 'Quick Edit Client'
+  requirements:
+    _permission: 'edit client'
+  options:
+    parameters:
+      client:
+        type: client
+
+client.sendmail:
+  path: 'admin/content/client/mail/{client}'
+  defaults:
+    _controller: '\Drupal\client\controller\ClientController::openEmailModalForm'
+    _title: 'Send Mail'
+  requirements:
+    _permission: 'edit client'
+  options:
+    parameters:
+      client:
+        type: client
+
+client.delete:
+  path: '/admin/content/client/{id}/delete'
+  defaults:
+    _form: 'Drupal\client\forms\ClientDeleteForm'
+    _title: 'Delete Client'
+  requirements:
+    _permission: 'delete client'
+
+client.action:
+  path: '/admin/content/client/action/{action}'
+  defaults:
+    _form: 'Drupal\client\forms\ClientBulkActionForm'
+    _title_callback: 'Drupal\client\forms\ClientBulkActionForm::getPageTitle'
+  requirements:
+    _permission: 'delete client'
+
+client.settings:
+  path: '/admin/config/client'
+  defaults:
+    _form: '\Drupal\client\forms\ClientSettingsForm'
+    _title: 'Clients page settings'
+  requirements:
+    _permission: 'administer site configuration'

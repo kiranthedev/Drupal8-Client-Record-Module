@@ -1,0 +1,6 @@
+name: Clients
+description: 'Client Module full CRUD to keep records of our clients'
+type: module
+core: 8.x
+package: Custom
+configure: client.settings
